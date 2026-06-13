@@ -192,6 +192,7 @@ export function useViewerPeer() {
 
   useEffect(() => {
     return () => {
+      connectRef.current = false
       if (callRef.current) callRef.current.close()
       if (peerRef.current) peerRef.current.destroy()
     }
