@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react'
 import HomePage from './components/HomePage'
 import SharerPage from './components/SharerPage'
 import ViewerPage from './components/ViewerPage'
+import FaqPage from './components/FaqPage'
 
 type Route =
   | { type: 'home' }
+  | { type: 'faq' }
   | { type: 'share' }
   | { type: 'view'; params?: string }
 
 function parseHash(): Route {
   const hash = window.location.hash.slice(1)
+  if (hash === '/faq') return { type: 'faq' }
   if (hash.startsWith('/share')) return { type: 'share' }
   if (hash.startsWith('/view/')) {
     const params = hash.slice('/view/'.length)
@@ -33,6 +36,8 @@ export default function App() {
       return <SharerPage />
     case 'view':
       return <ViewerPage encodedParams={route.params} />
+    case 'faq':
+      return <FaqPage />
     default:
       return <HomePage />
   }

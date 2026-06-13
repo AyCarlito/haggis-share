@@ -16,6 +16,13 @@ export default function Layout({ children, statusText }: LayoutProps) {
             HaggisShare
           </h1>
         </a>
+
+        <a
+          href="#/faq"
+          className="text-sm text-gray-400 no-underline transition-colors hover:text-white"
+        >
+          FAQ
+        </a>
       </header>
 
       <main className="flex-1 overflow-y-auto editor-grid bg-[#1e1f38] app-scroll">
