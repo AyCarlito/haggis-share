@@ -13,7 +13,6 @@ export default function ViewerPage({ encodedParams }: Props) {
   const [inputError, setInputError] = useState<string | null>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const initRef = useRef(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
 
   useEffect(() => {
@@ -39,14 +38,14 @@ export default function ViewerPage({ encodedParams }: Props) {
   const displayError = inputError || urlError
 
   useEffect(() => {
-    if (initRef.current || !decodedParams) return
-    initRef.current = true
+    if (!decodedParams) return
     derivePeerId(decodedParams).then(connect)
   }, [decodedParams, connect])
 
   useEffect(() => {
     if (videoRef.current && remoteStream) {
       videoRef.current.srcObject = remoteStream
+      videoRef.current.play()
     }
   }, [remoteStream])
 
@@ -61,7 +60,6 @@ export default function ViewerPage({ encodedParams }: Props) {
       return
     }
     setInputError(null)
-    initRef.current = true
     const peerId = await derivePeerId(params)
     connect(peerId)
   }
@@ -81,6 +79,7 @@ export default function ViewerPage({ encodedParams }: Props) {
             <video
               ref={videoRef}
               autoPlay
+              muted
               playsInline
               className="w-full rounded-lg bg-black object-contain max-h-[calc(100dvh-12rem)]"
             />
@@ -138,7 +137,7 @@ export default function ViewerPage({ encodedParams }: Props) {
             <p className="text-red-400">{error || 'Connection failed'}</p>
           </div>
           <button
-            onClick={() => { initRef.current = false }}
+             onClick={() => window.location.reload()}
             className="glass rounded-lg px-6 py-3 text-sm font-medium text-sidebar-fg transition-colors hover:bg-white/15"
           >
             Try Again
