@@ -58,12 +58,14 @@ export default function SharerPage() {
     )
   }
 
-  if (connectionState === 'connected') {
+  if (screenStream) {
     return (
       <div className="mx-auto flex min-h-svh max-w-2xl flex-col items-center gap-6 p-6">
         <div className="flex items-center gap-3">
-          <span className="h-3 w-3 animate-pulse rounded-full bg-green-500" />
-          <h2 className="text-xl font-semibold text-white">Screen Sharing Active</h2>
+          <span className={`h-3 w-3 animate-pulse rounded-full ${connectionState === 'connected' ? 'bg-green-500' : 'bg-yellow-500'}`} />
+          <h2 className="text-xl font-semibold text-white">
+            {connectionState === 'connected' ? 'Screen Sharing Active' : 'Connecting...'}
+          </h2>
         </div>
 
         <div className="w-full overflow-hidden rounded-xl bg-gray-900">

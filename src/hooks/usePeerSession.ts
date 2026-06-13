@@ -3,6 +3,17 @@ import Peer from 'peerjs'
 import type { MediaConnection } from 'peerjs'
 import type { ConnectionState } from '../types'
 
+/* Chrome 109+: CaptureController prevents auto-switch to the captured tab */
+interface CaptureController {
+  setFocusBehavior(focusBehavior: 'focus-captured-surface' | 'no-focus-change'): void
+}
+
+interface DisplayMediaOptions {
+  video: boolean | MediaTrackConstraints
+  audio: boolean | MediaTrackConstraints
+  controller?: CaptureController
+}
+
 export function useSharerPeer() {
   const [peerId, setPeerId] = useState<string | null>(null)
   const [viewerCount, setViewerCount] = useState(0)
@@ -38,10 +49,24 @@ export function useSharerPeer() {
     setConnectionState('connecting')
 
     try {
+      let captureController: CaptureController | undefined
+      try {
+        const cc = new (window as unknown as { CaptureController: new () => CaptureController }).CaptureController()
+        cc.setFocusBehavior('no-focus-change')
+        captureController = cc
+      } catch {
+        // CaptureController not available — fallback to window.focus()
+      }
+
       const stream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
         audio: false,
-      })
+        controller: captureController,
+      } as DisplayMediaOptions)
+
+      if (!captureController) {
+        window.focus()
+      }
       screenRef.current = stream
       setScreenStream(stream)
       stream.getVideoTracks()[0]?.addEventListener('ended', stopSharing)
@@ -124,7 +149,11 @@ export function useViewerPeer() {
       const peer = new Peer()
 
       peer.on('open', () => {
-        const call = peer.call(sharerPeerId, new MediaStream())
+        const canvas = document.createElement('canvas')
+        canvas.width = 1
+        canvas.height = 1
+        const dummyStream = canvas.captureStream(1)
+        const call = peer.call(sharerPeerId, dummyStream)
         callRef.current = call
 
         call.on('stream', (stream) => {
