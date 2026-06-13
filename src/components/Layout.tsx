@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import logoUrl from '../assets/logo.svg'
+import logoUrl from '../assets/logo.jpg'
 
 interface LayoutProps {
   children: ReactNode
