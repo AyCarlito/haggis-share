@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="none" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="logo-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#667eea"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <linearGradient id="logo-overlay" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ede6ff" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#ede6ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="24" fill="url(#logo-bg)"/>
+  <rect width="120" height="120" rx="24" fill="url(#logo-overlay)"/>
+  <path stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M36 48a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4H40a4 4 0 0 1-4-4V48z"/>
+  <path stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" d="M60 76v8M52 84h16"/>
+  <circle cx="60" cy="60" r="8" fill="#fff" opacity="0.9"/>
+  <path stroke="#667eea" stroke-width="2" stroke-linecap="round" d="M56 60l3 3 5-6"/>
+</svg>
