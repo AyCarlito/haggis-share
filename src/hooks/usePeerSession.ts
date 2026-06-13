@@ -46,6 +46,13 @@ export function useSharerPeer() {
 
   const startSharing = useCallback(async (targetPeerId: string) => {
     setError(null)
+
+    if (typeof navigator.mediaDevices?.getDisplayMedia !== 'function') {
+      setError('Screen sharing is not supported on this browser.')
+      setConnectionState('failed')
+      return
+    }
+
     setConnectionState('connecting')
 
     try {
