@@ -149,7 +149,11 @@ export function useViewerPeer() {
       const peer = new Peer()
 
       peer.on('open', () => {
-        const call = peer.call(sharerPeerId, new MediaStream())
+        const canvas = document.createElement('canvas')
+        canvas.width = 1
+        canvas.height = 1
+        const dummyStream = canvas.captureStream(1)
+        const call = peer.call(sharerPeerId, dummyStream)
         callRef.current = call
 
         call.on('stream', (stream) => {
